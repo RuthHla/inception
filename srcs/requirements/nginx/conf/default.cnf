@@ -1,0 +1,28 @@
+- Écouter sur le port 443, ssl pour protocole https
+- Où sont les certificats TLS
+- Quel dossier servir (root)
+- Si l'URL finit en .php → passer la requête à php-fpm:9000
+- Les headers de sécurité éventuels
+
+server {
+    listen 443 ssl;
+    server_name login.42.fr;
+
+    ssl_certificate     /etc/ssl/certs/nginx.crt;
+    ssl_certificate_key /etc/ssl/private/nginx.key;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass    wordpress:9000;
+        fastcgi_index   index.php;
+        include         fastcgi_params;
+        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_name;
+    }
+}

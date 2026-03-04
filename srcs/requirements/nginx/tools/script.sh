@@ -1,1 +1,4 @@
-Recevoir connexion,finir TLS, valdider certificat 
+- Générer la clé privée SSL
+- Créer et auto-signer le certificat HTTPS avec openssl
+- (optionnel) vérifier que php-fpm est joignable
+- Puis lancer nginx au premier plan (nginx -g 'daemon off;')
