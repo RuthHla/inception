@@ -5,18 +5,18 @@
 - Les headers de sécurité éventuels
 
 server {
-    listen 443 ssl;              #e
-    server_name login.42.fr;
+    listen 443 ssl;              #ecouter sur port 443 avec protocole TLS 
+    server_name login.42.fr;        #nom du serveur par defaut
 
-    ssl_certificate     /etc/ssl/certs/nginx.crt;
-    ssl_certificate_key /etc/ssl/private/nginx.key;
-    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_certificate     /etc/ssl/certs/nginx.crt;     #chemin des certif
+    ssl_certificate_key /etc/ssl/private/nginx.key;       #cle des certif
+    ssl_protocols       TLSv1.2 TLSv1.3;            #protcole TLS en question
 
-    root /var/www/html;
-    index index.php index.html;
+    root /var/www/html;  #dossier ou se trouve les fihciers du site web
+    index index.php index.html; #si chemin relatif alors chercher dans ces differents fichiers
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files $uri $uri/ =404; #pour tout url, regarder si on a un fihcier puis un dossier correspondant sinon eror404
     }
 
     location ~ \.php$ {
