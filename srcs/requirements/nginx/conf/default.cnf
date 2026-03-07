@@ -1,15 +1,9 @@
-- Écouter sur le port 443, ssl pour protocole https
-- Où sont les certificats TLS
-- Quel dossier servir (root)
-- Si l'URL finit en .php → passer la requête à php-fpm:9000
-- Les headers de sécurité éventuels
-
 server {
     listen 443 ssl;              #ecouter sur port 443 avec protocole TLS 
     server_name login.42.fr;        #nom du serveur par defaut
 
-    ssl_certificate     /etc/ssl/certs/nginx.crt;     #chemin des certif
-    ssl_certificate_key /etc/ssl/private/nginx.key;       #cle des certif
+    ssl_certificate      /etc/nginx/ssl/server.crt;     #chemin des certif
+    ssl_certificate_key  /etc/nginx/ssl/server.key;       #cle des certif
     ssl_protocols       TLSv1.2 TLSv1.3;            #protcole TLS en question
 
     root /var/www/html;  #dossier ou se trouve les fihciers du site web
@@ -23,46 +17,10 @@ server {
         fastcgi_pass    wordpress:9000;
         fastcgi_index   index.php;
         include         fastcgi_params;
-        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_name;
-    }
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;    }
 }
 
 
 
 
 
-
-
-
-ssl_certificate /etc/ssl/certs/nginx.crt;
-Où nginx doit trouver le certificat SSL (la partie publique). C'est ton script qui va le générer à cet emplacement.
-
-ssl_certificate_key /etc/ssl/private/nginx.key;
-Où nginx doit trouver la clé privée associée au certificat. Également générée par ton script.
-
-ssl_protocols TLSv1.2 TLSv1.3;
-Autorise uniquement les versions TLS 1.2 et 1.3. Le sujet Inception l'impose explicitement — les versions plus anciennes (TLS 1.0, 1.1) sont considérées non sécurisées.
-
-root /var/www/html;
-Le dossier où se trouvent les fichiers du site web dans le conteneur. C'est là que WordPress sera installé.
-
-index index.php index.html;
-Quand quelqu'un accède à / sans préciser de fichier, nginx cherche d'abord index.php, puis index.html.
-
-location / { try_files $uri $uri/ =404; }
-Pour toute URL, nginx cherche d'abord si le fichier existe ($uri), puis si c'est un dossier ($uri/), sinon renvoie une erreur 404.
-
-location ~ \.php$ {
-Pour toute URL qui finit par .php, le bloc suivant s'applique.
-
-fastcgi_pass wordpress:9000;
-Envoie la requête PHP au conteneur WordPress sur le port 9000 (là où php-fpm écoute). wordpress c'est le nom du service dans ton docker-compose.yml.
-
-fastcgi_index index.php;
-Si on accède à un dossier via FastCGI, le fichier par défaut est index.php.
-
-include fastcgi_params;
-Charge un fichier de variables standard que php-fpm a besoin pour fonctionner (variables d'environnement HTTP, méthode, etc.).
-
-fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-Dit à php-fpm quel fichier PHP exécuter exactement. C'est la combinaison du dossier root + le nom du script demandé.

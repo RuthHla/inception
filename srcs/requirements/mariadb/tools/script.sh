@@ -1,25 +1,31 @@
-#!/bin/bash
+#!/bin/sh
+
+set -e
 
 # Creer le dossier pour la socket
 mkdir -p /run/mysqld
-chown mysql:mysql /run/mysqld
+chown -R mysql:mysql /run/mysqld /var/lib/mysql
+
+if [ ! -d /var/lib/mysql/mysql ]; then
+    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+fi
 
 # Connexion base de donnee + creation de la base en mode reseau local
-mysqld --skip-networking --socket=/run/mysqld/mysqld.sock & #demarrer le serveur + desactiver TCP + communiquer a travers socket (entre fichier 100% local)
+mysqld --user=mysql --skip-networking --socket=/run/mysqld/mysqld.sock &
 
-until mariadb --socket=/run/mysqld/mysqld.sock -uroot -e "SELECT 1;" >/dev/null 2>&1; do #tant que le serveur ne retourne pas 1 on reitere
-  sleep 1
+until mariadb-admin --socket=/run/mysqld/mysqld.sock ping >/dev/null 2>&1; do
+    sleep 1
 done
 
-mariadb --socket=/run/mysqld/mysqld.sock -uroot -e "
-CREATE DATABASE IF NOT EXISTS wordpress;
-CREATE USER IF NOT EXISTS 'wp_user'@'%' IDENTIFIED BY 'wp_pass';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';
+mariadb --socket=/run/mysqld/mysqld.sock -uroot <<EOF
+CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
-"
+EOF
 
 mariadb-admin --socket=/run/mysqld/mysqld.sock -uroot shutdown
 
 # relancer en ecouter les plages
-exec mysqld
-
+exec mysqld --user=mysql
