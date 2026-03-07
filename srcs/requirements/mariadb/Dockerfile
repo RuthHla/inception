@@ -1,7 +1,5 @@
-
-
 # OS minimal avec apt disponible
-From debian:bullseye 
+FROM debian:bookworm
 
 # cmd shell pour appeler les bons paquets necessaires a limage, donc reflechir a quel paquet on a besoin
 Run apt-get update -y && apt-get install mariadb-server -y
