@@ -10,9 +10,10 @@
 
 set -e
 
-if [ ! -f wp-config.php ]; then
+if ! wp core is-installed --allow-root; then
 
-#va dans /var/ww/html par defaut. WP-CLI bloque root normalement pour evier pb de scurite
+#va dans /var/ww/html par defaut. WP-CLI bloque root normalement pour eviter pb de scurite
+cd /var/www/html
 wp core download --allow-root
 
 #genere fichier wp-config.php (co avec DB, cle de scurite, conf wordpress)
@@ -36,6 +37,7 @@ wp core install \
 wp user create \
  $WP_USER \
  $WP_USER_EMAIL \
+ --role=author \
  --user_pass=$WP_USER_PASSWORD \
  --allow-root
 
