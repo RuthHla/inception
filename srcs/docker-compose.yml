@@ -54,12 +54,12 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/login/data/mariadb
+      device: /home/${USER}/data/mariadb
   wordpress_data:
     driver_opts:
       type: none
       o: bind
-      device: /home/login/data/wordpress
+      device: /home/${USER}/data/wordpress
 
 # par defaut deja un reseau bridge local permettant disole mais plus explicite
 networks:
