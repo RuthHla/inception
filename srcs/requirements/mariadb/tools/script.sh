@@ -25,7 +25,7 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
 EOF
 
-mariadb-admin --socket=/run/mysqld/mysqld.sock -uroot shutdown
+mariadb-admin --socket=/run/mysqld/mysqld.sock -uroot -p"${MYSQL_ROOT_PASSWORD}" shutdown
 
 # relancer en ecouter les plages
 exec mysqld --user=mysql
