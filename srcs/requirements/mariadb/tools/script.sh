@@ -1,13 +1,14 @@
 #!/bin/sh
-
 set -e
 
 # Creer le dossier pour la socket
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld /var/lib/mysql
 
+first_run=0
 if [ ! -d /var/lib/mysql/mysql ]; then
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+    first_run=1
 fi
 
 # Connexion base de donnee + creation de la base en mode reseau local
@@ -17,13 +18,15 @@ until mariadb-admin --socket=/run/mysqld/mysqld.sock ping >/dev/null 2>&1; do
     sleep 1
 done
 
-mariadb --socket=/run/mysqld/mysqld.sock -uroot <<EOF
+if [ "$first_run" -eq 1 ]; then
+    mariadb --socket=/run/mysqld/mysqld.sock -uroot <<EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
 EOF
+fi
 
 mariadb-admin --socket=/run/mysqld/mysqld.sock -uroot -p"${MYSQL_ROOT_PASSWORD}" shutdown
 
