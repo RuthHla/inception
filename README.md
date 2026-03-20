@@ -1,46 +1,208 @@
-__This project has been created as part of the 42 curriculum by alandel__
-***
-# Inception 
-***
-## A “Description” section that clearly presents the project, including its goal and a
-brief overview.
-// goal : build a mini-infra web
-// synthese :
-main question -> How could we create an web infrastrcture supported by every os and config ? -> Learn to use some new tools (docker, docker-compose, mysql/mariadb, nginx, wordpress)
-***
-## An “Instructions” section containing any relevant information about compilation,
-installation, and/or execution.
-// Steps to launch the project :
-__Mandotory -> fill .env and secret folder__
-```
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ make
-$ docker compose up --build
-```
-***
-## A “Resources” section listing classic references related to the topic (documen-
-tation, articles, tutorials, etc.), as well as a description of how AI was used —
-specifying for which tasks and which parts of the project.
-// parler des docs/sites officiels + video yt 
-***
-## A Project description 
-section must also explain the use of Docker and the sources included in the project. 
-It must indicate the main design choices, as well as a
-comparison between:
-◦ Virtual Machines vs Docker
-◦ Secrets vs Environment Variables
-◦ Docker Network vs Host Network
-◦ Docker Volumes vs Bind Mounts
-*** 
-### Features of each container :
-- Mariadb
-* Nginx
-* Wordpress
-### Basics approach on using tools :
-* Docker / why using docker ? how does it work (theorical + indentation)? main cmd ?
-* Docker-compose / why using docker-compose(limit) ? how does it (theorical + indentation)? main cmd ?
-* Mariadb or My sql / why using Mariadb ? how does it (theorical + indentation)? main cmd ?
-* Nginx / why using Nginx ? how does it (theorical + indentation)? main cmd ?
-* Wordpress / why using Wordpress ? how does it (theorical + indentation)? main cmd ?
+# This project has been created as part of the 42 curriculum by alandel
 
+# Inception
+
+## Description
+
+The goal of this project is to build a small web infrastructure using Docker. It introduces the fundamentals of system administration and containerization by requiring the deployment of multiple services inside isolated containers. The challenge is to design a reproducible, portable, and maintainable environment that can run consistently across different machines.
+
+The infrastructure is composed of:
+
+* A **NGINX** container acting as a web server with TLS
+* A **WordPress** container running PHP-FPM
+* A **MariaDB** container used as the database
+
+Each service runs in its own container and communicates through a Docker network.
+
+This project answers a key question:
+
+> How can we create a web infrastructure that is portable, reproducible, and independent of the host system?
+
+## Instructions
+
+### Prerequisites
+
+* Docker
+* Docker Compose
+* Make
+
+### Setup
+
+Before running the project, you must:
+
+* Fill the `.env` file with the required variables
+* Configure the `secrets/` folder (database credentials, etc.)
+
+### Installation & Run
+
+```bash
+git clone https://example.com
+cd inception
+make
+```
+
+Or manually:
+
+```bash
+docker compose up --build
+```
+
+### Access
+
+Once the containers are running:
+
+* Website: https://localhost:8443
+
+## Project Architecture
+
+### Containers
+
+#### NGINX
+
+* Acts as a reverse proxy
+* Handles HTTPS (TLSv1.2 / TLSv1.3)
+* Forwards requests to WordPress (PHP-FPM)
+
+#### WordPress
+
+* Runs PHP-FPM
+* Connects to MariaDB
+* Serves dynamic content
+
+#### MariaDB
+
+* Stores WordPress data
+* Initialized via script at container startup
+
+## Docker Overview
+
+### Why Docker?
+
+Docker allows:
+
+* Isolation of services
+* Reproducibility of environments
+* Easier deployment and scaling
+
+Each container includes:
+
+* Application
+* Dependencies
+* Runtime environment
+
+This avoids the classic "it works on my machine" problem.
+
+### Docker vs Virtual Machines
+
+| | Docker | Virtual Machines |
+|---|---|---|
+| Lightweight | ✓ | ✗ |
+| Fast startup | ✓ | ✗ |
+| Share host kernel | ✓ | ✗ |
+| Full OS per VM | ✗ | ✓ |
+| Low resource usage | ✓ | ✗ |
+| High resource usage | ✗ | ✓ |
+
+➡️ Docker is more efficient for microservices architectures.
+
+### Docker Compose
+
+Docker Compose is used to:
+
+* Define multi-container applications
+* Manage services, networks, and volumes in one file
+
+Key advantages:
+
+* Simplifies orchestration
+* Centralized configuration
+
+## Data Management
+
+### Volumes vs Bind Mounts
+
+| | Volumes | Bind Mounts |
+|---|---|---|
+| Managed by Docker | ✓ | ✗ |
+| Linked to host filesystem | ✗ | ✓ |
+| Safer & portable | ✓ | ✗ |
+| More flexible | ✗ | ✓ |
+| Recommended for production | ✓ | ✗ |
+| Useful for development | ✗ | ✓ |
+
+➡️ This project uses Docker volumes to persist database and WordPress data.
+
+### Environment Variables vs Secrets
+
+| | Environment Variables | Docker Secrets |
+|---|---|---|
+| Easy to use | ✓ | ✗ |
+| More secure | ✗ | ✓ |
+| Stored in plain text | ✓ | ✗ |
+| Encrypted | ✗ | ✓ |
+| Good for non-sensitive data | ✓ | ✗ |
+| Used for passwords | ✗ | ✓ |
+
+➡️ Secrets are used for sensitive data like database credentials.
+
+## Networking
+
+### Docker Network vs Host Network
+
+| | Docker Network | Host Network |
+|---|---|---|
+| Isolated | ✓ | ✗ |
+| Direct access to host | ✗ | ✓ |
+| Secure | ✓ | ✗ |
+| Less secure | ✗ | ✓ |
+| Internal communication | ✓ | ✗ |
+| No isolation | ✗ | ✓ |
+
+➡️ This project uses a Docker network to allow containers to communicate securely.
+
+## Technical Choices
+
+* **NGINX**: lightweight and efficient web server
+* **MariaDB**: open-source, performant alternative to MySQL
+* **WordPress**: widely used CMS for dynamic websites
+* **Alpine Linux**: minimal image for lightweight containers
+
+## How It Works (Simplified Flow)
+
+1. User sends HTTPS request to NGINX
+2. NGINX handles SSL and forwards request
+3. WordPress processes the request via PHP-FPM
+4. WordPress queries MariaDB
+5. Response is returned to the user
+
+## Resources
+
+### Documentation
+
+* [Docker official documentation](https://docs.docker.com/)
+* [Docker Compose documentation](https://docs.docker.com/compose/)
+* [NGINX documentation](https://nginx.org/en/docs/)
+* [MariaDB documentation](https://mariadb.com/docs/)
+* [WordPress documentation](https://wordpress.org/documentation/)
+
+### Tutorials
+
+* Various YouTube tutorials on Docker and DevOps basics
+
+## Use of AI
+
+AI was used in this project for:
+
+* Understanding Docker concepts and best practices
+* Debugging configuration issues (networking, permissions, services)
+* Improving scripts and container setup
+* Clarifying theoretical concepts (Docker, NGINX, MariaDB)
+
+However, all implementation choices were reviewed and understood before integration.
+
+## Possible Improvements
+
+* Add Redis caching
+* Implement monitoring (Prometheus / Grafana)
+* Improve security (fail2ban, stricter TLS config)
+* Automate deployment
