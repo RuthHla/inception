@@ -8,7 +8,7 @@ The goal of this project is to build a small web infrastructure using Docker. It
 
 The infrastructure is composed of:
 
-* A **NGINX** container acting as a web server with TLS
+* A **NGINX** container acting as a web server with TLS (Transport Layer Security)
 * A **WordPress** container running PHP-FPM
 * A **MariaDB** container used as the database
 
@@ -165,7 +165,7 @@ Key advantages:
 * **NGINX**: lightweight and efficient web server
 * **MariaDB**: open-source, performant alternative to MySQL
 * **WordPress**: widely used CMS for dynamic websites
-* **Alpine Linux**: minimal image for lightweight containers
+* **Debian**: stable and reliable Linux distribution with comprehensive package support
 
 ## How It Works (Simplified Flow)
 
@@ -187,18 +187,14 @@ Key advantages:
 
 ### Tutorials
 
-* Various YouTube tutorials on Docker and DevOps basics
+* Various YouTube tutorials on Docker basics
 
 ## Use of AI
 
 AI was used in this project for:
 
 * Understanding Docker concepts and best practices
-* Debugging configuration issues (networking, permissions, services)
-* Improving scripts and container setup
 * Clarifying theoretical concepts (Docker, NGINX, MariaDB)
-
-However, all implementation choices were reviewed and understood before integration.
 
 ## Possible Improvements
 
