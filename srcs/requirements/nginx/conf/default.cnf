@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;              #ecouter sur port 443 avec protocole TLS 
-    server_name login.42.fr;        #nom du serveur par defaut
+    server_name alandel.42.fr;        #nom du serveur par defaut
 
     ssl_certificate      /etc/nginx/ssl/server.crt;     #chemin des certif
     ssl_certificate_key  /etc/nginx/ssl/server.key;       #cle des certif
@@ -10,7 +10,7 @@ server {
     index index.php index.html; #si chemin relatif alors chercher dans ces differents fichiers
 
     location / {
-        try_files $uri $uri/ =404; #pour tout url, regarder si on a un fihcier puis un dossier correspondant sinon eror404
+        try_files $uri $uri/ /index.php?$args;  #pour tout url, regarder si on a un fihcier puis un dossier correspondant sinon eror404
     }
 
     location ~ \.php$ {

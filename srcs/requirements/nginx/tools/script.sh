@@ -14,7 +14,7 @@ if [ ! -f /etc/nginx/ssl/server.key ] || [ ! -f /etc/nginx/ssl/server.crt ]; the
     -keyout /etc/nginx/ssl/server.key \
     -out /etc/nginx/ssl/server.crt \
     -days 365 -nodes \
-    -subj "/C=FR/O=My Company/CN=login.42.fr"
+    -subj "/C=FR/O=My Company/CN=alandel.42.fr"
 fi
 
 exec nginx -g 'daemon off;'
