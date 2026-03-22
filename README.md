@@ -51,7 +51,7 @@ docker compose up --build
 
 Once the containers are running:
 
-* Website: https://localhost:8443
+* Website: https://alandel.42.fr
 
 ## Project Architecture
 

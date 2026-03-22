@@ -9,10 +9,10 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mariadb_data:/var/lib/mysql
-    restart: unless-stopped
+    restart: unless-stopped #redemarre toujours sauf si container stopper volontairement
     networks:
       - inception
-
+ 
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
@@ -42,7 +42,7 @@ services:
     depends_on:
       - wordpress
     ports:
-      - "443:443" #pourquoi pas 8443:443 ?
+      - "443:443" # 443 https alors que 80 http
     volumes:
       - wordpress_data:/var/www/html
     restart: unless-stopped
@@ -61,7 +61,7 @@ volumes:
       o: bind
       device: /home/${USER}/data/wordpress
 
-# par defaut deja un reseau bridge local permettant d'isoler mais plus explicite
+# par defaut deja un reseau bridge local (reseau prive virtuel entre les conteneurs)
 networks:
   inception:
     driver: bridge
