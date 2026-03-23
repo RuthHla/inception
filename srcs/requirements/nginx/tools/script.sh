@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# - Générer la clé privée SSL
-# - Créer et auto-signer le certificat HTTPS avec openssl
-# - (optionnel) vérifier que php-fpm est joignable
-# - Puis lancer nginx au premier plan (nginx -g 'daemon off;')
-
 set -eu
 
 mkdir -p /etc/nginx/ssl
@@ -18,9 +13,3 @@ if [ ! -f /etc/nginx/ssl/server.key ] || [ ! -f /etc/nginx/ssl/server.crt ]; the
 fi
 
 exec nginx -g 'daemon off;'
-
-# IMPORTANT -> le container reste vivant uniquement tant que le processus PID 1 tourne.
-# Le premier plan sert uniquement à :
-    # garder le container vivant
-    # gérer correctement les signaux
-    # éviter un daemon détaché
