@@ -39,9 +39,6 @@ restart:
 logs:
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) logs
 
-logs-f:
-	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) logs -f
-
 ps:
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) ps
 
