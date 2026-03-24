@@ -33,8 +33,8 @@ fi
 
 if ! wp core is-installed --allow-root --path=/var/www/html; then
     echo "===> Installing WordPress"
-    wp core install \
-        --url="$WP_URL" \
+    wp core install \  
+        --url="https://$DOMAIN_NAME" \ 
         --title="Inception" \
         --admin_user="$WP_ADMIN_USER" \
         --admin_password="$WP_ADMIN_PASSWORD" \
@@ -44,8 +44,8 @@ if ! wp core is-installed --allow-root --path=/var/www/html; then
 fi
 
 echo "===> Updating WordPress URLs"
-wp option update home "$WP_URL" --allow-root --path=/var/www/html
-wp option update siteurl "$WP_URL" --allow-root --path=/var/www/html
+wp option update home "https://$DOMAIN_NAME" --allow-root --path=/var/www/html
+wp option update siteurl "https://$DOMAIN_NAME" --allow-root --path=/var/www/html
 
 if ! wp user get "$WP_USER" --allow-root --path=/var/www/html >/dev/null 2>&1; then
     echo "===> Creating second user"
