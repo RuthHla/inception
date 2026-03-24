@@ -8,6 +8,4 @@ RUN chmod +x /usr/local/bin/script.sh
 
 EXPOSE 443
 
-# si fichier colle a la place precedemement alors lancer script 
-# ou ne pas remplacer le fichier mais venir le modifier depuis le script
 ENTRYPOINT ["/usr/local/bin/script.sh"]

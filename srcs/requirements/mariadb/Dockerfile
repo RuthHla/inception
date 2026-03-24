@@ -1,4 +1,3 @@
-# avant dr version de debian
 FROM debian:bookworm
 
 Run apt-get update -y && apt-get install mariadb-server -y
