@@ -11,25 +11,9 @@ This document describes how a developer can set up, build, launch, and manage th
 ### Prerequisites
 
 Ensure the following are installed:
-- **Docker** (version 20.10+)
-- **Docker Compose** (version 1.29+)
-- **Make** (GNU Make 4.0+)
-
-### Project structure
-
-```
-inception/
-├── Makefile
-├── srcs/
-│   ├── docker-compose.yml
-│   ├── .env
-│   ├── requirements/
-│   │   ├── nginx/
-│   │   ├── wordpress/
-│   │   └── mariadb/
-│   └── conf/
-└── USER_DOC.md / DEV_DOC.md / README.md
-```
+- **Docker** (version 29.2.1+)
+- **Docker Compose** (Docker Compose version v2.15.1+)
+- **Make** (GNU Make 4.3+)
 
 ### Configure the environment
 
@@ -62,14 +46,8 @@ WP_USER_EMAIL=user@mail.com
 make
 ```
 
-or
-
-```bash
-make up
-```
-
 This will:
-- Create data directories (`~/data/wordpress` and `~/data/mariadb`)
+- Create data directories (`/home/login/data`)
 - Build Docker images
 - Create and start all containers
 - Set up the Docker network
@@ -112,8 +90,17 @@ docker logs -f inception_mariadb_1
 ### Access containers
 
 ```bash
-docker exec -it inception_wordpress_1 /bin/bash
-docker exec -it inception_mariadb_1 mysql -u root -p
+docker exec -it wordpress ls -la /var/www/html
+docker exec -it mariadb mariadb -u root -p -e "SHOW DATABASES"
+docker exec -it mariadb mariadb -u wpuser -p -e "USE wordpress; SHOW TABLES;"
+```
+
+### Access volumes
+
+```bash
+docker volume ls
+docker volume inspect inception_mariadb_data
+docker volume inspect inception_wordpress_data
 ```
 
 ---
@@ -125,15 +112,15 @@ docker exec -it inception_mariadb_1 mysql -u root -p
 All persistent data is stored on the host machine:
 
 ```
-~/data/
+/home/login/data
 ├── wordpress/    # WordPress files and configuration
 └── mariadb/      # Database files
 ```
 
 ### How persistence works
 
-- **WordPress volume:** `~/data/wordpress` → `/var/www/html` in container
-- **MariaDB volume:** `~/data/mariadb` → `/var/lib/mysql` in container
+- **WordPress volume:** `/home/login/data/wordpress` → `/var/www/html` in container
+- **MariaDB volume:** `/home/login/data/mariadb` → `/var/lib/mysql` in container
 
 All changes in the containers are automatically saved to these directories on the host.
 
@@ -146,27 +133,13 @@ Data persists when:
 Data is **deleted only with**:
 - `make fclean` (removes data directories)
 
-### Backup and restore
-
-Backup:
-```bash
-tar -czf backup.tar.gz ~/data/
-```
-
-Restore:
-```bash
-make stop
-tar -xzf backup.tar.gz -C ~/
-make up
-```
-
 ---
 
 ## Summary of commands
 
 | Task | Command |
 |------|---------|
-| Start project | `make up` |
+| Start project | `make / make up` |
 | Stop containers | `make stop` |
 | View status | `make ps` |
 | View logs | `make logs` |

@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;              #ecouter sur port 443 avec protocole TLS 
-    server_name alandel.42.fr;        #nom du serveur par defaut
+    server_name ${DOMAIN_NAME};        #nom du serveur par defaut
 
     ssl_certificate      /etc/nginx/ssl/server.crt;     #chemin des certif
     ssl_certificate_key  /etc/nginx/ssl/server.key;       #cle des certif

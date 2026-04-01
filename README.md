@@ -1,5 +1,4 @@
-# This project has been created as part of the 42 curriculum by alandel
-
+*This project has been created as part of the 42 curriculum by alandel*
 # Inception
 
 ## Description
@@ -31,20 +30,13 @@ This project answers a key question:
 Before running the project, you must:
 
 * Fill the `.env` file with the required variables
-* Configure the `secrets/` folder (database credentials, etc.)
 
 ### Installation & Run
 
 ```bash
-git clone https://example.com
+git clone https://example.com inception
 cd inception
 make
-```
-
-Or manually:
-
-```bash
-docker compose up --build
 ```
 
 ### Access
@@ -53,7 +45,7 @@ Once the containers are running:
 
 * Website: https://alandel.42.fr
 
-## Project Architecture
+## Project description
 
 ### Containers
 
@@ -84,12 +76,6 @@ Docker allows:
 * Reproducibility of environments
 * Easier deployment and scaling
 
-Each container includes:
-
-* Application
-* Dependencies
-* Runtime environment
-
 This avoids the classic "it works on my machine" problem.
 
 ### Docker vs Virtual Machines
@@ -101,7 +87,6 @@ This avoids the classic "it works on my machine" problem.
 | Share host kernel | ✓ | ✗ |
 | Full OS per VM | ✗ | ✓ |
 | Low resource usage | ✓ | ✗ |
-| High resource usage | ✗ | ✓ |
 
 ➡️ Docker is more efficient for microservices architectures.
 
@@ -143,7 +128,7 @@ Key advantages:
 | Good for non-sensitive data | ✓ | ✗ |
 | Used for passwords | ✗ | ✓ |
 
-➡️ Secrets are used for sensitive data like database credentials.
+➡️ This project uses Environment Variables for simplicity reasons.
 
 ## Networking
 
@@ -160,13 +145,6 @@ Key advantages:
 
 ➡️ This project uses a Docker network to allow containers to communicate securely.
 
-## Technical Choices
-
-* **NGINX**: lightweight and efficient web server
-* **MariaDB**: open-source, performant alternative to MySQL
-* **WordPress**: widely used CMS for dynamic websites
-* **Debian**: stable and reliable Linux distribution with comprehensive package support
-
 ## How It Works (Simplified Flow)
 
 1. User sends HTTPS request to NGINX
@@ -180,8 +158,8 @@ Key advantages:
 ### Documentation
 
 * [Docker official documentation](https://docs.docker.com/)
-* [Docker Compose documentation](https://docs.docker.com/compose/)
-* [NGINX documentation](https://nginx.org/en/docs/)
+* [Docker Compose documentation](https://docs.docker.com/compose/) (https://www.datacamp.com/fr/tutorial/docker-tutorial)
+* [NGINX documentation](https://nginx.org/en/docs/) (https://openclassrooms.com/fr/courses/1733551-gerez-votre-serveur-linux-et-ses-services/5236081-mettez-en-place-un-reverse-proxy-avec-nginx)
 * [MariaDB documentation](https://mariadb.com/docs/)
 * [WordPress documentation](https://wordpress.org/documentation/)
 
@@ -195,10 +173,3 @@ AI was used in this project for:
 
 * Understanding Docker concepts and best practices
 * Clarifying theoretical concepts (Docker, NGINX, MariaDB)
-
-## Possible Improvements
-
-* Add Redis caching
-* Implement monitoring (Prometheus / Grafana)
-* Improve security (fail2ban, stricter TLS config)
-* Automate deployment

@@ -1,5 +1,6 @@
 services:
   mariadb:
+    image: my_mariadb
     build: ./requirements/mariadb
     container_name: mariadb
     environment:
@@ -14,6 +15,7 @@ services:
       - inception
  
   wordpress:
+    image: my_wordpress
     build: ./requirements/wordpress
     container_name: wordpress
     environment:
@@ -37,8 +39,11 @@ services:
       - inception
 
   nginx:
+    image: my_nginx
     build: ./requirements/nginx
     container_name: nginx
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
     depends_on:
       - wordpress
     ports:
@@ -61,7 +66,7 @@ volumes:
       o: bind
       device: /home/${USER}/data/wordpress
 
-# par defaut deja un reseau bridge local (reseau prive virtuel entre les conteneurs)
+# par defaut deja un reseau bridge local
 networks:
   inception:
     driver: bridge

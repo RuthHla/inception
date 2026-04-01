@@ -10,17 +10,6 @@ This mini web infrastructure provides access to a WordPress website through thre
 
 ---
 
-## Prerequisites
-
-Before starting the project, you must:
-
-1. Configure the `.env` file located at `srcs/.env` with your own values
-2. Ensure that the following directories will be created with appropriate permissions:
-   - `~/data/wordpress` - for WordPress persistent data
-   - `~/data/mariadb` - for MariaDB persistent data
-
----
-
 ## Start and stop the project
 
 ### Initial setup and start
@@ -29,12 +18,6 @@ After filling the `srcs/.env` file with your own values, run:
 
 ```bash
 make
-```
-
-or equivalently:
-
-```bash
-make up
 ```
 
 This command will:
@@ -62,7 +45,6 @@ make logs      # View logs from all services
 **⚠️ Important:**
 - `make clean` removes Docker volumes but keeps the data directories
 - `make fclean` performs a complete cleanup and deletes all persisted project data (WordPress and MariaDB)
-- Use `make fclean` with caution as it cannot be undone
 
 ---
 
@@ -94,8 +76,6 @@ All credentials are stored in the `srcs/.env` file. Make sure to fill in the fol
 - **MariaDB database name**
 - **Domain name** (must be accessible via HTTPS)
 - Any other configuration variables required by your Docker services
-
-**Note:** Keep the `.env` file secure and never commit it to version control.
 
 ---
 
@@ -134,24 +114,3 @@ To test that the website is reachable through HTTPS, use:
 ```bash
 curl -vk https://<your_domain_name>
 ```
-
-### Success criteria
-
-If everything is working correctly:
-
-- ✅ All three containers must appear as running when you run `make ps`
-- ✅ The logs must not show fatal errors
-- ✅ The HTTPS request must return a valid HTTP response from the server
-- ✅ You can access the WordPress website at `https://<your_domain_name>`
-- ✅ You can log in to the WordPress admin panel at `https://<your_domain_name>/wp-admin`
-
----
-
-## Persistent data storage
-
-Your data is stored in the following directories on your host machine:
-
-- `~/data/wordpress/` - Contains all WordPress files and configuration
-- `~/data/mariadb/` - Contains all database files
-
-These directories are mounted into the Docker containers as volumes, ensuring data persistence across container restarts.
