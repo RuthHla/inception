@@ -79,6 +79,20 @@ make ps         # List containers
 make logs       # View logs
 ```
 
+```bash
+docker compose up                  # Start all services
+docker compose start               # Start stopped containers
+docker compose stop                # Stop containers
+docker compose restart             # Restart containers
+docker compose down                # Remove containers and network (keeps data)
+docker compose down -v             # Remove containers, network, and volumes
+docker compose down --rmi all -v   # Complete cleanup (deletes all data)
+docker compose up --build          # Build and start from scratch
+docker compose ps                  # List containers
+docker compose logs                # View logs
+docker compose build               # Build images only
+```
+
 ### View logs
 
 ```bash

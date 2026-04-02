@@ -9,5 +9,4 @@ RUN chmod +x /usr/local/bin/script.sh
 
 Expose 3306 
 
-# excute forcement le script alors que CMD non
 ENTRYPOINT ["/usr/local/bin/script.sh"]
