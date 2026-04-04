@@ -63,8 +63,8 @@ volumes:
   wordpress_data:
     driver_opts:
       type: none
-      o: bind
-      device: /home/${USER}/data/wordpress
+      o: bind #option : bind mount
+      device: /home/${USER}/data/wordpress # dossier contenant les vrais dfonnes du conteneur
 
 # par defaut deja un reseau bridge local
 networks:

@@ -21,9 +21,10 @@ dirs: $(WP_DATA) $(DB_DATA)
 build: dirs
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) build --no-cache
 
+#-d → lance en arrière-plan
 up: dirs
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) build --no-cache
-	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) up -d --build
+	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) up -d 
 
 down:
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) down
@@ -46,7 +47,6 @@ ps:
 clean:
 	$(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) down -v
 
-#attention au sudo
 # prune supprime toutes les images et -af force la suppressions de tous types dimages
 fclean: clean
 	docker system prune -af
